@@ -1,0 +1,26 @@
+
+body {
+        background-color: skyblue;
+        display: block;
+        text-align: center;
+}
+
+h1 {
+        font-family: Copperplate, Papyrus, fantasy;
+        text-decoration: underline;
+}
+
+label {
+        font-family: Copperplate, Papyrus, fantasy;
+}
+
+input {
+        border-width: 1px;
+        border-radius: 5px;
+}
+
+.dateneingabe {
+        background-color: WhiteSmoke;
+        border-radius: 15px;
+        border-width: medium;
+}
