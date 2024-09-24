@@ -22,7 +22,7 @@
 
                         $dbconn = $conn;
 
-                        $sqlCode = $_POST['comCode'];      
+                        $sqlCode = $_POST['comCode'];
 
                         $erg = pg_query_params($dbconn,'SELECT * FROM kunden where code like $1',array($sqlCode));
                                 
@@ -31,7 +31,7 @@
                                 $cNameGet = $line[1];
                                 $cStreetGet = $line[2];
                                 $cPLZGet = $line[5];
-                                $cOrtGet = $line[6]; 
+                                $cOrtGet = $line[6];
                                 $cLaenderkennzeichenGet = $line[7];
                                 $cLandesvorwahlGet = $line[8];
                                 $cOrtsvorwahlGet = $line[9];
