@@ -14,7 +14,7 @@
                 <h1>IT Concepts GmbH customer data update</h1>
         </div>
         <br><br><br>
-        
+
         <?php
                 include_once 'dbconn.php';
 
@@ -43,7 +43,6 @@
                 }
                         
                 if(isset($_POST['button2'])){
-                        
                         $dbconn1 = $conn;
                         
                         $sqlStatement = pg_prepare($dbconn1, "my_query", 'UPDATE kunden SET name = $1, strasse = $2, plz = $3, ort = $4, laenderkennzeichen = $5, landesvorwahl = $6, ortsvorwahl = $7, telefon = $8, email = $9, website = $10 WHERE code like $11');
