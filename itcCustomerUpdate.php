@@ -14,10 +14,7 @@
                 <h1>IT Concepts GmbH customer data update</h1>
         </div>
         <br><br><br>
-
-
-
-
+        
         <?php
                 include_once 'dbconn.php';
 
@@ -42,13 +39,8 @@
                                 $cEmailGet = $line[3];
                                 $cWebsiteGet = $line[11];
                         }
-
                         pg_close($dbconn);
-
                 }
-
-
-                
                         
                 if(isset($_POST['button2'])){
                         
@@ -151,6 +143,5 @@
         </div>
 </body>
 </html>
-
 
 
