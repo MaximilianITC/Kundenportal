@@ -25,7 +25,7 @@
                         $sqlCode = $_POST['comCode'];
 
                         $erg = pg_query_params($dbconn,'SELECT * FROM kunden where code like $1',array($sqlCode));
-                                
+
                         while($line = pg_fetch_array($erg)){
                                 $cCodeGet = $line[4];
                                 $cNameGet = $line[1];
