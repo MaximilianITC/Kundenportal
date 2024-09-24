@@ -22,7 +22,7 @@
 
                         $dbconn = $conn;
 
-                        $sqlCode = $_POST['comCode'];            
+                        $sqlCode = $_POST['comCode'];      
 
                         $erg = pg_query_params($dbconn,'SELECT * FROM kunden where code like $1',array($sqlCode));
                                 
