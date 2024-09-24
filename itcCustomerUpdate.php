@@ -21,7 +21,9 @@
         <?php
                 if(isset($_POST['button1'])){
 
-                        $dbconn = pg_connect("host=localhost port=5432 dbname=Kundendaten user=postgres password=SNMG2f208");
+                        include 'dbconn.php';
+
+                        $dbconn = $conn;
 
                         $sqlCode = $_POST['comCode'];
 
