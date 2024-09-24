@@ -16,7 +16,7 @@
         <br><br><br>
 
         <?php
-                include_once 'dbconn.php';
+                require_once 'dbconn.php';
 
                 if(isset($_POST['button1'])){
 
