@@ -108,7 +108,7 @@
                         <input type="text" id="comEmail" name="comEmail" value="<?php echo htmlspecialchars($cEmailGet); ?>" />
                         <br><br>
 
-                        <label for"wesite">Website: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <label for="wesite">Website: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comWebsite" name="comWebsite" value="<?php echo htmlspecialchars($cWebsiteGet); ?>" />
                         <br><br>
 
