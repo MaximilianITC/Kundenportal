@@ -19,22 +19,22 @@
 
 
         <?php
-                if(isset($_POST['button1'])){
+                include_once 'dbconn.php';
 
-                        include 'dbconn.php';
+                if(isset($_POST['button1'])){
 
                         $dbconn = $conn;
 
-                        $sqlCode = $_POST['comCode'];
+                        $sqlCode = $_POST['comCode'];            
 
                         $erg = pg_query_params($dbconn,'SELECT * FROM kunden where code like $1',array($sqlCode));
-
+                                
                         while($line = pg_fetch_array($erg)){
                                 $cCodeGet = $line[4];
                                 $cNameGet = $line[1];
                                 $cStreetGet = $line[2];
                                 $cPLZGet = $line[5];
-                                $cOrtGet = $line[6];
+                                $cOrtGet = $line[6]; 
                                 $cLaenderkennzeichenGet = $line[7];
                                 $cLandesvorwahlGet = $line[8];
                                 $cOrtsvorwahlGet = $line[9];
@@ -48,25 +48,26 @@
                 }
 
 
-
-
+                
+                        
                 if(isset($_POST['button2'])){
-                        $dbconn1 = pg_connect("host=localhost port=5432 dbname=Kundendaten user=postgres password=SNMG2f208");
-
+                        
+                        $dbconn1 = $conn;
+                        
                         $sqlStatement = pg_prepare($dbconn1, "my_query", 'UPDATE kunden SET name = $1, strasse = $2, plz = $3, ort = $4, laenderkennzeichen = $5, landesvorwahl = $6, ortsvorwahl = $7, telefon = $8, email = $9, website = $10 WHERE code like $11');
 
                         $sqlStatement = pg_execute($dbconn1, "my_query", array($_POST['comNameInput'], $_POST['comStreet'], $_POST['comPLZ'], $_POST['comOrt'], $_POST['comLaenderkennzeichen'], $_POST['comLandesvorwahl'], $_POST['comOrtsvorwahl'], $_POST['comTelefon'], $_POST['comEmail'], $_POST['comWebsite'], $_POST['comCode']));
                         $messageThankYou = "We thank you for your Update. If you want to change your data you just need to submit your code again.";
                 }
         ?>
-
+                
         <form method="post">
                 <div class = "dateneingabe">
                         <br><br><br>
                         <label for"code">Please enter your Code:</label>
                         <input type="text" id="comCode" name="comCode" value="<?php echo htmlspecialchars($cCodeGet); ?>"/>
                         <br><br>
-
+                        
                         <input type="submit" name="button1" value="Submit Code"/>
                         <br><br><br>
 
@@ -150,5 +151,6 @@
         </div>
 </body>
 </html>
-                                                          
-                                                                                                                                                                                                                                                                                1,1           Top
+
+
+
