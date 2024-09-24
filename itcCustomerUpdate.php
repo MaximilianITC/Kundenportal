@@ -55,7 +55,7 @@
         <form method="post">
                 <div class = "dateneingabe">
                         <br><br><br>
-                        <label for"code">Please enter your Code:</label>
+                        <label for="code">Please enter your Code:</label>
                         <input type="text" id="comCode" name="comCode" value="<?php echo htmlspecialchars($cCodeGet); ?>"/>
                         <br><br>
                         
