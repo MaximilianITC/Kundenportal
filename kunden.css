@@ -1,17 +1,32 @@
 
-body {
-        background-color: skyblue;
-        display: block;
-        text-align: center;
+.bild img{
+        border-radius: 15px;
+        float: left;
+        background-color: darkgrey;
 }
 
-h1 {
-        font-family: Copperplate, Papyrus, fantasy;
+.impressum {
+        background-color: darkblue;
+        color: white;
+        border-radius: 15px;
+}
+
+.bild h1 {
+        font-weight: bold;
+        float: center;
+        font-family: Arial, Helvetica, sans-serif;
         text-decoration: underline;
 }
 
+body {
+        background-color: lightgrey;
+        display: block;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+}
+
 label {
-        font-family: Copperplate, Papyrus, fantasy;
+        font-family: Arial, Helvetica, sans-serif;
 }
 
 input {
@@ -20,7 +35,19 @@ input {
 }
 
 .dateneingabe {
+        float: center;
         background-color: WhiteSmoke;
         border-radius: 15px;
         border-width: medium;
+        font-family: Arial, Helvetica, sans-serif;
 }
+
+.danke {
+        color: green;
+}
+
+h2 {
+        font-weight: bold;
+        text-decoration: underline;
+}
+

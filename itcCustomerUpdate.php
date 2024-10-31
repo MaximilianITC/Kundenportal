@@ -16,49 +16,76 @@
         <br><br><br>
 
         <?php
-                require_once 'dbconn.php';
+                require_once('dbconn.php');
 
                 if(isset($_POST['button1'])){
 
                         $dbconn = $conn;
 
+                        
                         $sqlCode = $_POST['comCode'];
+                        
 
-                        $erg = pg_query_params($dbconn,'SELECT * FROM kunden where code like $1',array($sqlCode));
+                        $stmtSelect = $dbconn->prepare("select * from kunden where code like ?;");
+                        $stmtSelect->bind_param("s", $sqlCode);
+                        $stmtSelect->execute();
+                        $erg = $stmtSelect->get_result();
+                        
+                        while($line = $erg->fetch_assoc()){
+                                $cCodeGet = $line["code"];
+                                $cNameGet = $line["name"];
+                                $cName2Get = $line["namezusatz"];
+                                $cStreetGet = $line["strasse"];
+                                $cStreet2Get = $line["strasse2"];
+                                $cPLZGet = $line["plz"];
+                                $cOrtGet = $line["ort"];
+                                $cLaenderkennzeichenGet = $line["laenderkennzeichen"];
+                                $cLandesvorwahlGet = $line["landesvorwahl"];
+                                $cOrtsvorwahlGet = $line["ortsvorwahl"];
+                                $cTelefonGet = $line["telefon"];
+                                $cEmailGet = $line["email"];
+                                $cWebsiteGet = $line["website"];
 
-                        while($line = pg_fetch_array($erg)){
-                                $cCodeGet = $line[4];
-                                $cNameGet = $line[1];
-                                $cStreetGet = $line[2];
-                                $cPLZGet = $line[5];
-                                $cOrtGet = $line[6];
-                                $cLaenderkennzeichenGet = $line[7];
-                                $cLandesvorwahlGet = $line[8];
-                                $cOrtsvorwahlGet = $line[9];
-                                $cTelefonGet = $line[10];
-                                $cEmailGet = $line[3];
-                                $cWebsiteGet = $line[11];
+                                $cEmailRechnungGet = $line["emailrechnung"];
+                                $cEmailMahnungGet = $line["mahnung"];
+                                $cUidGet = $line["uid"];
+                                $cRechnungsAdresseGet = $line["emailrechnung"];
+                                $cLieferadresseGet = $line["lieferadresse"];
+                                $cKontaktEinkaufGet = $line["kontakteinkauf"];
+                                $cKontaktServiceGet = $line["kontaktservice"];
+                                $cKontaktBuchhaltungGet = $line["kontaktbuchhaltung"];
                         }
-                        pg_close($dbconn);
-                }
-                        
-                if(isset($_POST['button2'])){
-                        $dbconn1 = $conn;
-                        
-                        $sqlStatement = pg_prepare($dbconn1, "my_query", 'UPDATE kunden SET name = $1, strasse = $2, plz = $3, ort = $4, laenderkennzeichen = $5, landesvorwahl = $6, ortsvorwahl = $7, telefon = $8, email = $9, website = $10 WHERE code like $11');
 
-                        $sqlStatement = pg_execute($dbconn1, "my_query", array($_POST['comNameInput'], $_POST['comStreet'], $_POST['comPLZ'], $_POST['comOrt'], $_POST['comLaenderkennzeichen'], $_POST['comLandesvorwahl'], $_POST['comOrtsvorwahl'], $_POST['comTelefon'], $_POST['comEmail'], $_POST['comWebsite'], $_POST['comCode']));
+                        //$dbconn->close();
+                }
+
+                if(isset($_POST['button2'])){
+
+                        $dbconn1 = $conn;
+
+
+                        /*$stmt = $dbconn1->prepare("UPDATE kunden SET name = ? WHERE code like ?;");
+
+                        $stmt->bind_param("ss", $_POST['comNameInput'],$_POST['comCode']);
+                        $stmt->execute();*/
+
+
+
+                        $stmt = $dbconn1->prepare("UPDATE kunden SET name = ?, strasse = ?, plz = ?, ort = ?, laenderkennzeichen = ?, landesvorwahl = ?, ortsvorwahl = ?, telefon = ?, email = ?, website = ?, emailrechnung = ?, uid = ?, rechnungsadresse = ?, lieferadresse = ?, kontakteinkauf = ?, kontaktservice = ?, kontaktbuchhaltung = ?, namezusatz = ?, strasse2 = ?, mahnung = ? WHERE code like ?");
+
+                        $stmt->bind_param("sssssssssssssssssssss", $_POST['comNameInput'], $_POST['comStreet'], $_POST['comPLZ'], $_POST['comOrt'], $_POST['comLaenderkennzeichen'], $_POST['comLandesvorwahl'], $_POST['comOrtsvorwahl'], $_POST['comTelefon'], $_POST['comEmail'], $_POST['comWebsite'], $_POST['comRechnungsEmail'], $_POST['comUID'], $_POST['comRechnungsanschrift'], $_POST['comLieferadresse'], $_POST['comAnsprechpartnerEinkauf'], $_POST['comAnsprechpartnerService'], $_POST['comAnsprechpartnerBuchhaltung'],$_POST['comName2Input'], $_POST['comStreet2'] ,$_POST['comMahnungsEmail'] ,$_POST['comCode']);
+                        $stmt->execute();
                         $messageThankYou = "We thank you for your Update. If you want to change your data you just need to submit your code again.";
                 }
         ?>
-                
+
         <form method="post">
                 <div class = "dateneingabe">
                         <br><br><br>
-                        <label for="code">Please enter your Code:</label>
+                        <label for="code">Please enter your Customre-Code:</label>
                         <input type="text" id="comCode" name="comCode" value="<?php echo htmlspecialchars($cCodeGet); ?>"/>
                         <br><br>
-                        
+
                         <input type="submit" name="button1" value="Submit Code"/>
                         <br><br><br>
 
@@ -68,48 +95,99 @@
                         <br>
 
 
-                        <label for="companyName">Company name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <label for="companyName">Company name: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comNameInput" name="comNameInput" value="<?php echo htmlspecialchars($cNameGet); ?>"/>
                         <br><br>
 
+                        <label for="companyName2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comName2Input" name="comName2Input" value="<?php echo htmlspecialchars($cName2Get); ?>"/>
+                        <br><br>
 
-                        <label for="strasse">Street: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+
+                        <label for="strasse">Street: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comStreet" name="comStreet" value="<?php echo htmlspecialchars($cStreetGet); ?>" />
                         <br><br>
 
+                        <label for="strasse2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comStreet2" name="comStreet2" value="<?php echo htmlspecialchars($cStreet2Get); ?>" />
+                        <br><br>
 
-                        <label for="plz">Postal Code: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <label for="plz">Postal code: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comPLZ" name="comPLZ" value="<?php echo htmlspecialchars($cPLZGet); ?>" />
                         <br><br>
 
-                        <label for="ort">Town: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <label for="ort">Town: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comOrt" name="comOrt" value="<?php echo htmlspecialchars($cOrtGet); ?>" />
                         <br><br>
 
 
-                        <label for="laenderkennzeichen">Country Code: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <label for="laenderkennzeichen">Country code: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comLaenderkennzeichen" name="comLaenderkennzeichen" value="<?php echo htmlspecialchars($cLaenderkennzeichenGet); ?>" />
                         <br><br>
 
-                        <label for="landesvorwahl">Phone prefix (countryp) &nbsp; &nbsp; &nbsp; </label>
+                        <label for="landesvorwahl">Phone prefix (country): &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
                         <input type="text" id="comLandesvorwahl" name="comLandesvorwahl" value="<?php echo htmlspecialchars($cLandesvorwahlGet); ?>" />
                         <br><br>
 
-                        <label for="ortsvorwahl">Phone prefix (town): &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <label for="ortsvorwahl">Phone prefix (town): &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comOrtsvorwahl" name="comOrtsvorwahl" value="<?php echo htmlspecialchars($cOrtsvorwahlGet); ?>" />
                         <br><br>
 
 
-                        <label for="telefon">Telephone: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <label for="telefon">Telephone: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comTelefon" name="comTelefon" value="<?php echo htmlspecialchars($cTelefonGet); ?>" />
                         <br><br>
 
-                        <label for="emailAdresse">Email: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <label for="emailAdresse">Email: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comEmail" name="comEmail" value="<?php echo htmlspecialchars($cEmailGet); ?>" />
                         <br><br>
 
-                        <label for="wesite">Website: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+
+
+
+                        <label for="rechnungsEmail">Email (billing): &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
+                        <input type="text" id="comRechnungsEmail" name="comRechnungsEmail" value="<?php echo htmlspecialchars($cEmailRechnungGet); ?>"/>
+                        <br><br>
+
+                        <label for="mahnungsEmail">Email (reminder): &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+
+                         <input type="text" id="comMahnungsEmail" name="comMahnungsEmail" value="<?php echo htmlspecialchars($cEmailMahnungGet); ?>"/>
+                        <br><br>
+
+
+                        <label for="wesite">Website: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comWebsite" name="comWebsite" value="<?php echo htmlspecialchars($cWebsiteGet); ?>" />
+                        <br><br>
+
+
+
+
+
+
+
+                        <label for="UID">VAT identification number: &nbsp; &nbsp;</label>
+                        <input type="text" id="comUID" name="comUID" value="<?php echo htmlspecialchars($cUidGet); ?>" />
+                        <br><br>
+
+                        <label for="rechnungsanschrift">Billing address: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comRechnungsanschrift" name="comRechnungsanschrift" value="<?php echo htmlspecialchars($cRechnungsAdresseGet); ?>" />
+                        <br><br>
+
+                        <label for="lieferadresse">Delivery address: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comLieferadresse" name="comLieferadresse" value="<?php echo htmlspecialchars($cLieferadresseGet) ?>" />
+                        <br><br>
+
+                        <label for="ansprechpartnerEinkauf">Contact person (purchase): &nbsp;</label>
+                        <input type="text" id="comAnsprechpartnerEinkauf" name="comAnsprechpartnerEinkauf" value="<?php echo htmlspecialchars($cKontaktEinkaufGet) ?>" />
+                        <br><br>
+
+                        <label for="ansprechpartnerService">Contact person (service): &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comAnsprechpartnerService" name="comAnsprechpartnerService" value="<?php echo htmlspecialchars($cKontaktServiceGet) ?>" />
+                        <br><br>
+
+                        <label for="ansprechpartnerBuchhaltung">Contact person (accounting):</label>
+                        <input type="text" id="comAnsprechpartnerBuchhaltung" name="comAnsprechpartnerBuchhaltung" value="<?php echo htmlspecialchars($cKontaktBuchhaltungGet) ?>" />
+
                         <br><br>
 
 
@@ -142,5 +220,3 @@
         </div>
 </body>
 </html>
-
-
