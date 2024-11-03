@@ -73,23 +73,70 @@
                 }
 
                 if(isset($_POST['button2'])){
+			if(filter_var($_POST['comRechnungsEmail'], FILTER_VALIDATE_EMAIL)){
+                        	$dbconn1 = $conn;
 
-                        $dbconn1 = $conn;
+                        	$stmt = $dbconn1->prepare("UPDATE kunden SET name = ?, strasse = ?, plz = ?, ort = ?, laenderkennzeichen = ?, landesvorwahl = ?, ortsvorwahl = ?, telefon = ?, email = ?, website = ?, emailrechnung = ?, uid = ?, rechnungsadresse = ?, lieferadresse = ?, kontakteinkauf = ?, kontaktservice = ?, kontaktbuchhaltung = ?, namezusatz = ?, strasse2 = ?, mahnung = ?, gln = ?, routeid = ?, osnatc = ?, kontakteinkaufmail = ?, kontakteinkaufphone = ?, kontaktservicemail = ?, kontaktservicephone = ?, kontaktbuchhaltungmail = ?, kontaktbuchhaltungphone = ? WHERE code like ?");
 
+                        	$stmt->bind_param("ssssssssssssssssssssssssssssss", $_POST['comNameInput'], $_POST['comStreet'], $_POST['comPLZ'], $_POST['comOrt'], $_POST['comLaenderkennzeichen'], $_POST['comLandesvorwahl'], $_POST['comOrtsvorwahl'], $_POST['comTelefon'], $_POST['comEmail'], $_POST['comWebsite'], $_POST['comRechnungsEmail'], $_POST['comUID'], $_POST['comRechnungsanschrift'], $_POST['comLieferadresse'], $_POST['comAnsprechpartnerEinkauf'], $_POST['comAnsprechpartnerService'], $_POST['comAnsprechpartnerBuchhaltung'],$_POST['comName2Input'], $_POST['comStreet2'] ,$_POST['comMahnungsEmail'], $_POST['comGLN'], $_POST['comRouteID'], $_POST['comOSNATC'] , $_POST['comAnsprechpartnerEinkaufMail'], $_POST['comAnsprechpartnerEinkaufPhone'], $_POST['comAnsprechpartnerServiceMail'], $_POST['comAnsprechpartnerServicePhone'], $_POST['comAnsprechpartnerBuchhaltungMail'], $_POST['comAnsprechpartnerBuchhaltungPhone'], $_POST['comCode']);
+				$stmt->execute();
+                        	$messageThankYou = "We thank you for your Update. If you want to change your data you just need to submit your code again.";
+                	}
+			else{
+				$messageError = "ERROR: Please enter a valide Email in the field 'Email (billing)'.";
+	
+				$error_css='background-color:red';
+				$dbconn = $conn;
 
-			/*$stmt = $dbconn1->prepare("UPDATE kunden SET name = ? WHERE code like ?;");
+			
+                        	$sqlCode = $_POST['comCode'];
+			
 
-                        $stmt->bind_param("ss", $_POST['comNameInput'],$_POST['comCode']);
-			$stmt->execute();*/
+				$stmtSelect = $dbconn->prepare("select * from kunden where code like ?;");
+				$stmtSelect->bind_param("s", $sqlCode);
+				$stmtSelect->execute();
+				$erg = $stmtSelect->get_result();
+			
+                       		while($line = $erg->fetch_assoc()){
+                               		$cCodeGet = $line["code"];
+                               		$cNameGet = $line["name"];
+                                	$cName2Get = $line["namezusatz"];
+                                	$cStreetGet = $line["strasse"];
+                                	$cStreet2Get = $line["strasse2"];
+                                	$cPLZGet = $line["plz"];
+                                	$cOrtGet = $line["ort"];
+                                	$cLaenderkennzeichenGet = $line["laenderkennzeichen"];
+                               		$cLandesvorwahlGet = $line["landesvorwahl"];
+                                	$cOrtsvorwahlGet = $line["ortsvorwahl"];
+                                	$cTelefonGet = $line["telefon"];
+                                	$cEmailGet = $line["email"];
+                                	$cWebsiteGet = $line["website"];
 
+					$cGlnGet = $line["gln"];
+					$cRouteIdGet = $line["routeid"];
+					$cOsnatcGet = $line["osnatc"];
 
+					$cKontaktEinkaufMailGet = $line["kontakteinkaufmail"];
+					$cKontaktEinkaufPhoneGet = $line["kontakteinkaufphone"];
 
-                        $stmt = $dbconn1->prepare("UPDATE kunden SET name = ?, strasse = ?, plz = ?, ort = ?, laenderkennzeichen = ?, landesvorwahl = ?, ortsvorwahl = ?, telefon = ?, email = ?, website = ?, emailrechnung = ?, uid = ?, rechnungsadresse = ?, lieferadresse = ?, kontakteinkauf = ?, kontaktservice = ?, kontaktbuchhaltung = ?, namezusatz = ?, strasse2 = ?, mahnung = ?, gln = ?, routeid = ?, osnatc = ?, kontakteinkaufmail = ?, kontakteinkaufphone = ?, kontaktservicemail = ?, kontaktservicephone = ?, kontaktbuchhaltungmail = ?, kontaktbuchhaltungphone = ? WHERE code like ?");
+					$cKontaktServiceMailGet = $line["kontaktservicemail"];
+					$cKontaktServicePhoneGet = $line["kontaktservicephone"];
 
-                        $stmt->bind_param("ssssssssssssssssssssssssssssss", $_POST['comNameInput'], $_POST['comStreet'], $_POST['comPLZ'], $_POST['comOrt'], $_POST['comLaenderkennzeichen'], $_POST['comLandesvorwahl'], $_POST['comOrtsvorwahl'], $_POST['comTelefon'], $_POST['comEmail'], $_POST['comWebsite'], $_POST['comRechnungsEmail'], $_POST['comUID'], $_POST['comRechnungsanschrift'], $_POST['comLieferadresse'], $_POST['comAnsprechpartnerEinkauf'], $_POST['comAnsprechpartnerService'], $_POST['comAnsprechpartnerBuchhaltung'],$_POST['comName2Input'], $_POST['comStreet2'] ,$_POST['comMahnungsEmail'], $_POST['comGLN'], $_POST['comRouteID'], $_POST['comOSNATC'] , $_POST['comAnsprechpartnerEinkaufMail'], $_POST['comAnsprechpartnerEinkaufPhone'], $_POST['comAnsprechpartnerServiceMail'], $_POST['comAnsprechpartnerServicePhone'], $_POST['comAnsprechpartnerBuchhaltungMail'], $_POST['comAnsprechpartnerBuchhaltungPhone'], $_POST['comCode']);
-			$stmt->execute();
-                        $messageThankYou = "We thank you for your Update. If you want to change your data you just need to submit your code again.";
-                }
+					$cKontaktBuchhaltungMailGet = $line["kontaktbuchhaltungmail"];
+					$cKontaktBuchhaltungPhoneGet = $line["kontaktbuchhaltungphone"];
+
+                                	$cEmailRechnungGet = $line["emailrechnung"];
+                                	$cEmailMahnungGet = $line["mahnung"];
+                                	$cUidGet = $line["uid"];
+                                	$cRechnungsAdresseGet = $line["emailrechnung"];
+                                	$cLieferadresseGet = $line["lieferadresse"];
+                               		$cKontaktEinkaufGet = $line["kontakteinkauf"];
+                                	$cKontaktServiceGet = $line["kontaktservice"];
+                                	$cKontaktBuchhaltungGet = $line["kontaktbuchhaltung"];
+                        
+				}			
+			}
+		}
         ?>
 
         <form method="post">
@@ -103,6 +150,7 @@
                         <br><br><br>
 
                         <h3 class="danke"><?php echo $messageThankYou; ?></h3>
+			<h3 style="color:red;"><?php echo $messageError; ?></h3>
 
                         <h2>Please enter or update your data here:</h2>
                         <br>
@@ -159,7 +207,7 @@
 
 
                         <label for="rechnungsEmail">Email (billing): &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </label>
-                        <input type="text" id="comRechnungsEmail" name="comRechnungsEmail" value="<?php echo htmlspecialchars($cEmailRechnungGet); ?>"/>
+                        <input type="text" id="comRechnungsEmail" name="comRechnungsEmail" value="<?php echo htmlspecialchars($cEmailRechnungGet); ?>" style="<?php echo $error_css; ?>"/>
                         <br><br>
 
                         <label for="mahnungsEmail">Email (reminder): &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
@@ -300,6 +348,7 @@
         </div>
 </body>
 </html>
+
 
 
 
