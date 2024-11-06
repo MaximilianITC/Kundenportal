@@ -46,24 +46,32 @@
                                 $cEmailGet = $line["email"];
                                 $cWebsiteGet = $line["website"];
 
-				$cGlnGet = $line["gln"];
-				$cRouteIdGet = $line["routeid"];
+				$cGlnGet = "";/*$line["gln"];*/
+				$cRouteIdGet = "";/*$line["routeid"];*/
 				$cOsnatcGet = $line["osnatc"];
 
-				$cKontaktEinkaufMailGet = $line["kontakteinkaufmail"];
-				$cKontaktEinkaufPhoneGet = $line["kontakteinkaufphone"];
+				$cKontaktEinkaufMailGet = "";/*$line["kontakteinkaufmail"];*/
+				$cKontaktEinkaufPhoneGet = "";/*$line["kontakteinkaufphone"];*/
 
-				$cKontaktServiceMailGet = $line["kontaktservicemail"];
-				$cKontaktServicePhoneGet = $line["kontaktservicephone"];
+				$cKontaktServiceMailGet = "";/*$line["kontaktservicemail"];*/
+				$cKontaktServicePhoneGet = "";/*$line["kontaktservicephone"];*/
 
-				$cKontaktBuchhaltungMailGet = $line["kontaktbuchhaltungmail"];
-				$cKontaktBuchhaltungPhoneGet = $line["kontaktbuchhaltungphone"];
+				$cKontaktBuchhaltungMailGet = "";/*$line["kontaktbuchhaltungmail"];*/
+				$cKontaktBuchhaltungPhoneGet = "";/*$line["kontaktbuchhaltungphone"];*/
 
                                 $cEmailRechnungGet = $line["emailrechnung"];
                                 $cEmailMahnungGet = $line["mahnung"];
                                 $cUidGet = $line["uid"];
-                                $cRechnungsAdresseGet = $line["emailrechnung"];
-                                $cLieferadresseGet = $line["lieferadresse"];
+                                $cRechnungsAdresseGet = "";/*$line["emailrechnung"];*/
+
+                                $cLieferadresseGet = "";/*$line["lieferadresse"];*/
+				$cLieferadressePLZ = $line["lieferadresseplz"];
+				$cLieferadresseOrt = $line["lieferadressestadt"];
+				$cLieferadresseStrasse = $line["lieferadressestrasse"];
+				$cLieferadresseHausnummer = $line["lieferadressehausnummer"];
+				$cLieferadresseLand = $line["lieferadresseland"];
+
+
                                 $cKontaktEinkaufGet = $line["kontakteinkauf"];
                                 $cKontaktServiceGet = $line["kontaktservice"];
                                 $cKontaktBuchhaltungGet = $line["kontaktbuchhaltung"];
@@ -76,11 +84,44 @@
 			if(filter_var($_POST['comRechnungsEmail'], FILTER_VALIDATE_EMAIL)){
                         	$dbconn1 = $conn;
 
-                        	$stmt = $dbconn1->prepare("UPDATE kunden SET name = ?, strasse = ?, plz = ?, ort = ?, laenderkennzeichen = ?, landesvorwahl = ?, ortsvorwahl = ?, telefon = ?, email = ?, website = ?, emailrechnung = ?, uid = ?, rechnungsadresse = ?, lieferadresse = ?, kontakteinkauf = ?, kontaktservice = ?, kontaktbuchhaltung = ?, namezusatz = ?, strasse2 = ?, mahnung = ?, gln = ?, routeid = ?, osnatc = ?, kontakteinkaufmail = ?, kontakteinkaufphone = ?, kontaktservicemail = ?, kontaktservicephone = ?, kontaktbuchhaltungmail = ?, kontaktbuchhaltungphone = ? WHERE code like ?");
+                        	$stmt = $dbconn1->prepare("UPDATE kunden SET lieferadressehausnummer = ?, lieferadresseland = ?, lieferadresseplz = ?,lieferadressestadt = ?, lieferadressestrasse = ?, name = ?, strasse = ?, plz = ?, ort = ?, laenderkennzeichen = ?, landesvorwahl = ?, ortsvorwahl = ?, telefon = ?, email = ?, website = ?, emailrechnung = ?, uid = ?, /*rechnungsadresse = ?,*/ /*lieferadresse = ?,*/ kontakteinkauf = ?, kontaktservice = ?, kontaktbuchhaltung = ?, namezusatz = ?, strasse2 = ?, mahnung = ?, /*gln = ?, routeid = ?,*/ osnatc = ?/*, kontakteinkaufmail = ?, kontakteinkaufphone = ?, kontaktservicemail = ?, kontaktservicephone = ?, kontaktbuchhaltungmail = ?, kontaktbuchhaltungphone = ?*/ WHERE code like ?");
 
-                        	$stmt->bind_param("ssssssssssssssssssssssssssssss", $_POST['comNameInput'], $_POST['comStreet'], $_POST['comPLZ'], $_POST['comOrt'], $_POST['comLaenderkennzeichen'], $_POST['comLandesvorwahl'], $_POST['comOrtsvorwahl'], $_POST['comTelefon'], $_POST['comEmail'], $_POST['comWebsite'], $_POST['comRechnungsEmail'], $_POST['comUID'], $_POST['comRechnungsanschrift'], $_POST['comLieferadresse'], $_POST['comAnsprechpartnerEinkauf'], $_POST['comAnsprechpartnerService'], $_POST['comAnsprechpartnerBuchhaltung'],$_POST['comName2Input'], $_POST['comStreet2'] ,$_POST['comMahnungsEmail'], $_POST['comGLN'], $_POST['comRouteID'], $_POST['comOSNATC'] , $_POST['comAnsprechpartnerEinkaufMail'], $_POST['comAnsprechpartnerEinkaufPhone'], $_POST['comAnsprechpartnerServiceMail'], $_POST['comAnsprechpartnerServicePhone'], $_POST['comAnsprechpartnerBuchhaltungMail'], $_POST['comAnsprechpartnerBuchhaltungPhone'], $_POST['comCode']);
+                        	$stmt->bind_param("sssssssssssssssssssssssss", $_POST['comLieferadresseHausnummer'], $_POST['comLieferadresseLand'], $_POST['comLieferadressePLZ'],$_POST['comLieferadresseOrt'],$_POST['comLieferadresseStrasse'], $_POST['comNameInput'], $_POST['comStreet'], $_POST['comPLZ'], $_POST['comOrt'], $_POST['comLaenderkennzeichen'], $_POST['comLandesvorwahl'], $_POST['comOrtsvorwahl'], $_POST['comTelefon'], $_POST['comEmail'], $_POST['comWebsite'], $_POST['comRechnungsEmail'], $_POST['comUID'],/* $_POST['comRechnungsanschrift'],*/ /*$_POST['comLieferadresse'],*/ $_POST['comAnsprechpartnerEinkauf'], $_POST['comAnsprechpartnerService'], $_POST['comAnsprechpartnerBuchhaltung'],$_POST['comName2Input'], $_POST['comStreet2'] ,$_POST['comMahnungsEmail'], /*$_POST['comGLN'], $_POST['comRouteID'],*/ $_POST['comOSNATC'] , /*$_POST['comAnsprechpartnerEinkaufMail'], $_POST['comAnsprechpartnerEinkaufPhone'], $_POST['comAnsprechpartnerServiceMail'], $_POST['comAnsprechpartnerServicePhone'], $_POST['comAnsprechpartnerBuchhaltungMail'], $_POST['comAnsprechpartnerBuchhaltungPhone'],*/ $_POST['comCode']);
 				$stmt->execute();
                         	$messageThankYou = "We thank you for your Update. If you want to change your data you just need to submit your code again.";
+
+
+				// the message
+				$msg = "Dear customer,\nyour data heve been saved to our system.\n\n".
+				"\nCompany Name:				".$_POST['comNameInput'].
+				"\n						".$_POST['comName2Input'].
+				"\nStreet:					".$_POST['comStreet'].
+				"\n						".$_POST['comStreet2'].
+				"\nPostal code:					".$_POST['comPLZ'].
+				"\nTown:					".$_POST['comOrt'].
+				"\nCountry code:				".$_POST['comPLZ'].
+				"\nPhone prefix (country):			".$_POST['comLandesvorwahl'].
+				"\nPhone prefix (town):				".$_POST['comOrtsvorwahl'].
+				"\nTelephone:					".$_POST['comTelefon'].
+				"\nEmail:					".$_POST['comEmail'].
+				"\nEmail (billing):				".$_POST['comRechnungsEmail'].
+				"\nEmail (reminder):				".$_POST['comMahnungsEmail'].
+				"\nWebsite:					".$_POST['comWebsite'].
+				"\nVAT identification number:			".$_POST['comUID'].
+				"\nOur supplier number at the customer:		".$_POST['comOSNATC'].
+				"\nDelivery adress:".
+				"\n			Country:		".$_POST['comLieferadresseLand'].
+				"\n			Postal code:		".$_POST['comLieferadressePLZ'].
+				"\n			Town:			".$_POST['comLieferadresseOrt'].
+				"\n			Street:			".$_POST['comLieferadresseStrasse'].
+				"\n			House number:		".$_POST['comLieferadresseHausnummer']."";
+
+				// use wordwrap() if lines are longer than 70 characters
+				$msg = wordwrap($msg,70);
+
+				$headers = "From: sales@itcworld.com";
+				// send email
+				mail($_POST['comEmail'],"IT Concepts customer data update",$msg,$headers);
                 	}
 			else{
 				$messageError = "ERROR: Please enter a valide Email in the field 'Email (billing)'.";
@@ -112,24 +153,31 @@
                                 	$cEmailGet = $line["email"];
                                 	$cWebsiteGet = $line["website"];
 
-					$cGlnGet = $line["gln"];
-					$cRouteIdGet = $line["routeid"];
+					$cGlnGet = "";/*$line["gln"];*/
+					$cRouteIdGet = "";/*$line["routeid"];*/
 					$cOsnatcGet = $line["osnatc"];
 
-					$cKontaktEinkaufMailGet = $line["kontakteinkaufmail"];
-					$cKontaktEinkaufPhoneGet = $line["kontakteinkaufphone"];
+					$cKontaktEinkaufMailGet = "";/*$line["kontakteinkaufmail"];*/
+					$cKontaktEinkaufPhoneGet = "";/*$line["kontakteinkaufphone"];*/
 
-					$cKontaktServiceMailGet = $line["kontaktservicemail"];
-					$cKontaktServicePhoneGet = $line["kontaktservicephone"];
+					$cKontaktServiceMailGet = "";/*$line["kontaktservicemail"];*/
+					$cKontaktServicePhoneGet = "";/*$line["kontaktservicephone"];*/
 
-					$cKontaktBuchhaltungMailGet = $line["kontaktbuchhaltungmail"];
-					$cKontaktBuchhaltungPhoneGet = $line["kontaktbuchhaltungphone"];
+					$cKontaktBuchhaltungMailGet = "";/*$line["kontaktbuchhaltungmail"];*/
+					$cKontaktBuchhaltungPhoneGet = "";/*$line["kontaktbuchhaltungphone"];*/
 
                                 	$cEmailRechnungGet = $line["emailrechnung"];
                                 	$cEmailMahnungGet = $line["mahnung"];
                                 	$cUidGet = $line["uid"];
-                                	$cRechnungsAdresseGet = $line["emailrechnung"];
-                                	$cLieferadresseGet = $line["lieferadresse"];
+                                	$cRechnungsAdresseGet = "";/*$line["emailrechnung"];*/
+                                	$cLieferadresseGet = "";/*$line["lieferadresse"];*/
+					$cLieferadressePLZ = $line["lieferadresseplz"];
+					$cLieferadresseOrt = $line["lieferadressestadt"];
+					$cLieferadresseStrasse = $line["lieferadressestrasse"];
+					$cLieferadresseHausnummer = $line["lieferadressehausnummer"];
+					$cLieferadresseLand = $line["lieferadresseland"];
+
+
                                		$cKontaktEinkaufGet = $line["kontakteinkauf"];
                                 	$cKontaktServiceGet = $line["kontaktservice"];
                                 	$cKontaktBuchhaltungGet = $line["kontaktbuchhaltung"];
@@ -234,13 +282,13 @@
 
 
 
-			<label for="GLN">GLN: &nbsp; &nbsp;  &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+			<!--<label for="GLN">GLN: &nbsp; &nbsp;  &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comGLN" name="comGLN" value="<?php echo htmlspecialchars($cGlnGet); ?>" />
                         <br><br>
 
 			<label for="routeid">Route-ID: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp; &nbsp;  &nbsp;&nbsp; &nbsp;  &nbsp;</label>
                         <input type="text" id="comRouteID" name="comRouteID" value="<?php echo htmlspecialchars($cRouteIdGet); ?>" />
-                        <br><br>
+                        <br><br>-->
 
 			<label for="OSNATC">Our supplier number at the customer:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comOSNATC" name="comOSNATC" value="<?php echo htmlspecialchars($cOsnatcGet); ?>" />
@@ -251,15 +299,62 @@
 
 	
 
-                        <label for="rechnungsanschrift">Billing address: &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <!--<label for="rechnungsanschrift">Billing address: &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comRechnungsanschrift" name="comRechnungsanschrift" value="<?php echo htmlspecialchars($cRechnungsAdresseGet); ?>" />
+                        <br><br>-->
+
+
+
+
+
+
+
+
+
+
+                        <label for="lieferadresse">Delivery address: &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <!--<input type="text" id="comLieferadresse" name="comLieferadresse" value="<?php echo htmlspecialchars($cLieferadresseGet) ?>" />-->
                         <br><br>
 
-                        <label for="lieferadresse">Delivery address: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
-                        <input type="text" id="comLieferadresse" name="comLieferadresse" value="<?php echo htmlspecialchars($cLieferadresseGet) ?>" />
+			
+			&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<label for="lieferadresseLand">Country: &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comLieferadresseLand" name="comLieferadresseLand" value="<?php echo htmlspecialchars($cLieferadresseLand) ?>" />
                         <br><br>
 
-                        <label for="ansprechpartnerEinkauf">Contact person (purchase): &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+			&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<label for="lieferadressePLZ">Postal code: &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comLieferadressePLZ" name="comLieferadressePLZ" value="<?php echo htmlspecialchars($cLieferadressePLZ) ?>" />
+                        <br><br>
+
+
+			&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<label for="lieferadresseOrt">Town: &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comLieferadresseOrt" name="comLieferadresseOrt" value="<?php echo htmlspecialchars($cLieferadresseOrt) ?>" />
+                        <br><br>
+
+			&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<label for="lieferadresseStrasse">Street: &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comLieferadresseStrasse" name="comLieferadresseStrasse" value="<?php echo htmlspecialchars($cLieferadresseStrasse) ?>" />
+                        <br><br>
+
+			&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<label for="lieferadresseHausnummer">House number: &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                        <input type="text" id="comLieferadresseHausnummer" name="comLieferadresseHausnummer" value="<?php echo htmlspecialchars($cLieferadresseHausnummer) ?>" />
+                        <br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <!--<label for="ansprechpartnerEinkauf">Contact person (purchase): &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comAnsprechpartnerEinkauf" name="comAnsprechpartnerEinkauf" value="<?php echo htmlspecialchars($cKontaktEinkaufGet) ?>" />
                         <br><br>
 
@@ -311,7 +406,7 @@
 
 			&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<label for="ansprechpartnerBuchhaltungPhone">Phone: &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
                         <input type="text" id="comAnsprechpartnerBuchhaltungPhone" name="comAnsprechpartnerBuchhaltungPhone" value="<?php echo htmlspecialchars($cKontaktBuchhaltungPhoneGet) ?>" />
-                        <br><br>
+                        <br><br>-->
 
 
 
